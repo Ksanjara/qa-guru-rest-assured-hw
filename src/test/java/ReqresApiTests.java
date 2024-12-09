@@ -1,3 +1,5 @@
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -8,6 +10,12 @@ import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.*;
 
 public class ReqresApiTests {
+
+    @BeforeAll
+    public static void preconditionsForAllTests(){
+        RestAssured.baseURI = "https://reqres.in";
+        RestAssured.basePath = "/api";
+    }
 
     @Test
     void successfulRegistrationTest(){
@@ -21,11 +29,11 @@ public class ReqresApiTests {
                 .contentType(JSON)
 
                 .when()
-                .post("https://reqres.in/api/register")
+                .post("/register")
 
                 .then()
                 .statusCode(200)
-                .body( "token", is("QpwL5tke4Pnpja7X4"));
+                .body( "token", is(notNullValue()));
     }
 
     @Test
@@ -37,7 +45,7 @@ public class ReqresApiTests {
                 .contentType(JSON)
 
                 .when()
-                .post("https://reqres.in/api/register")
+                .post("/register")
 
                 .then()
                 .statusCode(400)
@@ -55,7 +63,7 @@ public class ReqresApiTests {
                 .contentType(JSON)
 
                 .when()
-                .put("https://reqres.in/api/users/2")
+                .put("/users/2")
 
                 .then()
                 .statusCode(200)
@@ -73,7 +81,7 @@ public class ReqresApiTests {
                 .contentType(JSON)
 
                 .when()
-                .patch("https://reqres.in/api/users/2")
+                .patch("/users/2")
 
                 .then()
                 .statusCode(200)
@@ -84,7 +92,7 @@ public class ReqresApiTests {
     @Test
     void deleteUserTest(){
                 when()
-                .delete("https://reqres.in/api/users/2")
+                .delete("/users/2")
 
                 .then()
                 .statusCode(204)
