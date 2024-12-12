@@ -38,6 +38,11 @@ dependencies {
     )
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+
 tasks.withType(Test) {
     useJUnitPlatform()
 
@@ -47,4 +52,11 @@ tasks.withType(Test) {
             exceptionFormat "short"
         }
     }
+}
+
+task api_tests(type: Test) {
+    useJUnitPlatform {
+        includeTags("API")
+    }
+
 }

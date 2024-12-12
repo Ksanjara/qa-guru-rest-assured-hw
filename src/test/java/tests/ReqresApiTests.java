@@ -2,9 +2,7 @@ package tests;
 
 import io.restassured.RestAssured;
 import models.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
 
@@ -24,6 +22,8 @@ public class ReqresApiTests {
         //    RestAssured.basePath = "/api";
     }
 
+    @DisplayName("Успешная регистрация пользователя")
+    @Tag("API")
     @Test
     void successfulRegistrationTest() {
         RegistrationBodyModel regData = new RegistrationBodyModel();
@@ -45,6 +45,8 @@ public class ReqresApiTests {
         step("Check response", () -> Assertions.assertNotNull(response.getToken()));
     }
 
+    @DisplayName("Неуспешная регистрация пользователя")
+    @Tag("API")
     @Test
     void unsuccessfulRegistrationTest() {
         RegistrationBodyModel regData = new RegistrationBodyModel();
@@ -64,6 +66,8 @@ public class ReqresApiTests {
         step("Check response", () -> Assertions.assertEquals("Missing password", regError.getError()));
     }
 
+    @DisplayName("Изменение данных пользователя (метод PUT)")
+    @Tag("API")
     @Test
     void updatePutTest() {
         UpdateUserBodyModel regData = new UpdateUserBodyModel();
@@ -86,6 +90,8 @@ public class ReqresApiTests {
 
     }
 
+    @DisplayName("Изменение данных пользователя (метод PATCH)")
+    @Tag("API")
     @Test
     void updatePatchTest() {
         UpdateUserBodyModel regData = new UpdateUserBodyModel();
@@ -108,6 +114,9 @@ public class ReqresApiTests {
 
     }
 
+
+    @DisplayName("Удаление пользователя")
+    @Tag("API")
     @Test
     void deleteUserTest() {
         step("Make request and assert", () ->
