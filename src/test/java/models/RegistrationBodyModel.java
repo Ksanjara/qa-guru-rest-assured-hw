@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class RegistrationBodyModel {
-    String email, password;
+    String email;
+    String password;
 
 }
