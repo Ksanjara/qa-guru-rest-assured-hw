@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 import static specs.DeleteUserSpec.deleteRequestSpec;
 import static specs.DeleteUserSpec.deleteResponseSpec;
 import static specs.RegistrationSpec.*;
@@ -19,7 +20,6 @@ public class ReqresApiTests {
     @BeforeAll
     public static void preconditionsForAllTests() {
         RestAssured.baseURI = "https://reqres.in";
-        //    RestAssured.basePath = "/api";
     }
 
     @DisplayName("Успешная регистрация пользователя")
@@ -34,10 +34,8 @@ public class ReqresApiTests {
         RegistrationResponseModel response = step("Make request", () ->
                 given(registrationRequestSpec)
                         .body(regData)
-
                         .when()
                         .post()
-
                         .then()
                         .spec(registrationResponseSpec)
                         .extract().as(RegistrationResponseModel.class));
@@ -55,15 +53,13 @@ public class ReqresApiTests {
         RegistrationErrorModel regError = step("Make request", () ->
                 given(registrationRequestSpec)
                         .body(regData)
-
                         .when()
                         .post()
-
                         .then()
                         .spec(unsuccessfulRegistrationResponseSpec)
                         .extract().as(RegistrationErrorModel.class));
 
-        step("Check response", () -> Assertions.assertEquals("Missing password", regError.getError()));
+        step("Check response", () -> assertThat(regError.getError()).isEqualTo("Missing password"));
     }
 
     @DisplayName("Изменение данных пользователя (метод PUT)")
@@ -77,16 +73,14 @@ public class ReqresApiTests {
         UpdateUserResponseModel response = step("Make request", () ->
                 given(updateRequestSpec)
                         .body(regData)
-
                         .when()
                         .put()
-
                         .then()
                         .spec(updateResponseSpec)
                         .extract().as(UpdateUserResponseModel.class));
 
         step("Check response", () ->
-                Assertions.assertTrue(response.getUpdatedAt().startsWith(String.valueOf(LocalDate.now()))));
+                assertThat(response.getUpdatedAt()).startsWith(String.valueOf(LocalDate.now())));
 
     }
 
@@ -101,16 +95,14 @@ public class ReqresApiTests {
         UpdateUserResponseModel response = step("Make request", () ->
                 given(updateRequestSpec)
                         .body(regData)
-
                         .when()
                         .patch()
-
                         .then()
                         .spec(updateResponseSpec)
                         .extract().as(UpdateUserResponseModel.class));
 
         step("Check response", () ->
-                Assertions.assertTrue(response.getUpdatedAt().startsWith(String.valueOf(LocalDate.now()))));
+                assertThat(response.getUpdatedAt()).startsWith(String.valueOf(LocalDate.now())));
 
     }
 
@@ -123,7 +115,6 @@ public class ReqresApiTests {
                 given(deleteRequestSpec)
                         .when()
                         .delete()
-
                         .then()
                         .spec(deleteResponseSpec)
         );
